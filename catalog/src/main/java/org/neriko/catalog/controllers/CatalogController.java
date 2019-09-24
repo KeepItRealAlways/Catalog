@@ -1,16 +1,12 @@
 package org.neriko.catalog.controllers;
 
-import com.sun.istack.NotNull;
 import org.neriko.catalog.repositories.CatalogRepository;
 import org.neriko.catalog.entities.Catalog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 public class CatalogController {
@@ -18,7 +14,7 @@ public class CatalogController {
     @Autowired
     private CatalogRepository catalogRepository;
 
-    @RequestMapping(value = "/catalog", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(value = "/catalog")
     @ResponseBody
     public List<Catalog> listCatalogs(@RequestParam(required = false, value = "fields") List<String > fields) {
         return catalogRepository.findAll();
@@ -26,7 +22,8 @@ public class CatalogController {
 
     @GetMapping("/catalog/{id}")
     @ResponseBody
-    public Catalog getCatalog(@PathVariable @NotNull String id, @RequestParam(required = false, value = "fields") List<String > fields) {
+    public Catalog getCatalog(@PathVariable String id,
+                              @RequestParam(required = false, value = "fields") List<String > fields) {
         return catalogRepository.getOne(id);
     }
 
@@ -37,11 +34,9 @@ public class CatalogController {
     }
 
     //TODO реализовать
-    @RequestMapping(value = "/catalog/{id}", method = RequestMethod.PATCH, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/catalog/{id}")
     @ResponseBody
-    public Catalog updateCatalog(@RequestBody Map<String, Object> patch, @PathVariable String id) {
-        return catalogRepository.getOne(id);
-    }
+    public void updateCatalog(@RequestBody Map<String, Object> patch, @PathVariable String id) { }
 
     @DeleteMapping("/catalog/{id}")
     @ResponseBody
