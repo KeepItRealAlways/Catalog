@@ -29,8 +29,8 @@ public class CategoryController {
 
     @PostMapping("/category")
     @ResponseBody
-    public Category createCategory(@RequestBody Category catalog) {
-        return categoryRepository.save(catalog);
+    public Category createCategory(@RequestBody Category category) {
+        return categoryRepository.save(category);
     }
 
     //TODO реализовать

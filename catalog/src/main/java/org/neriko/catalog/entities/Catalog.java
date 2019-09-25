@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Data
 @Entity
@@ -41,4 +42,7 @@ public class Catalog {
 
     @Column(name="valid_for_end")
     private Timestamp validForEnd;
+
+    @OneToMany(mappedBy = "catalog")
+    private Set<Category> categories;
 }

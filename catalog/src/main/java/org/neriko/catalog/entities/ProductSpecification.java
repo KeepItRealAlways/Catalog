@@ -9,9 +9,8 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
-@Table(name = "category")
-public class Category {
-
+@Table(name = "prod_spec")
+public class ProductSpecification {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
@@ -23,9 +22,6 @@ public class Category {
     @Column(name="last_update")
     @UpdateTimestamp
     private Timestamp lastUpdate; //Date and time of the last update
-
-    @Column(name = "version")
-    private String version; //Category version
 
     @Column(name = "lifecycle_status")
     private String lifecycleStatus; //Used to indicate the current lifecycle status
@@ -45,7 +41,16 @@ public class Category {
     @Column(name = "description")
     private String description; //Description of the category
 
+    @Column(name = "brand")
+    private String brand; //Description of the category
+
+    @Column(name = "prodnumber")
+    private String productNumber; //Description of the category
+
     @ManyToOne
-    @JoinColumn(name = "catalog")
+    @JoinColumn(name = "catalog", referencedColumnName = "id")
     private Catalog catalog;
+
+    //ToDo prodSpecValUse M-t-O
+    //ToDo relatedPartyRef M-t-M
 }
