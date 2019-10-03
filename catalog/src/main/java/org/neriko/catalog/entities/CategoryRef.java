@@ -4,22 +4,22 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "market_segment_ref")
-public class MarketSegmentRef {
-
+@Table(name = "category")
+public class CategoryRef {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String market_segment_ref_id;
+    private String category_id; //A string. Unique identifier of the category.
 
     @Column(name = "href")
-    private String href;
+    private String href; //A string. Reference of the category
+
+    @Column(name = "version")
+    private String version; //Category version
 
     @Column(name = "name")
-    private String name;
+    private String name; //Name of the category
 }

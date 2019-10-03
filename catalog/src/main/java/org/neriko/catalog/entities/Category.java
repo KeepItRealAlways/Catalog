@@ -15,7 +15,7 @@ public class Category {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id; //A string. Unique identifier of the category.
+    private String category_id; //A string. Unique identifier of the category.
 
     @Column(name = "href")
     private String href; //A string. Reference of the category
@@ -36,7 +36,7 @@ public class Category {
     @Column(name = "valid_for_end")
     private Timestamp validForEnd; //The TimePeriod for which the category is valid
 
-    @Column(name = "parent_category")
+    @Column(name = "parent_id")
     private String parentId; //Unique identifier of the parent category
 
     @Column(name = "name")
@@ -46,6 +46,6 @@ public class Category {
     private String description; //Description of the category
 
     @ManyToOne
-    @JoinColumn(name = "catalog")
+    @JoinColumn(name = "catalog_fk")
     private Catalog catalog;
 }

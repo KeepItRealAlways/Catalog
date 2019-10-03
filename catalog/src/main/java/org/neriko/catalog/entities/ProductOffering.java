@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -17,7 +18,7 @@ public class ProductOffering {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id;
+    private String prod_offer_id;
 
     @Column(name = "href")
     private String href;
@@ -38,9 +39,6 @@ public class ProductOffering {
     @Column(name = "valid_for_end")
     private Timestamp validForEnd;
 
-    @Column(name = "parent_category")
-    private String parentId;
-
     @Column(name = "name")
     private String name;
 
@@ -48,29 +46,46 @@ public class ProductOffering {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "category", referencedColumnName = "id")
-    private Category category;
+    @JoinColumn(name = "category_fk")
+    private CategoryRef category;
 
     @ManyToOne
-    @JoinColumn(name = "prod_spec", referencedColumnName = "id")
+    @JoinColumn(name = "prod_spec_fk")
     private ProductSpecification productSpecification;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany
     @JoinTable(
             name = "po_msr",
-            joinColumns = { @JoinColumn(name = "prod_offer") },
-            inverseJoinColumns = { @JoinColumn(name = "market_segment_ref") }
+            joinColumns = { @JoinColumn(name = "prod_offer_fk") },
+            inverseJoinColumns = { @JoinColumn(name = "market_segment_ref_fk") }
     )
     Set<MarketSegmentRef> marketSegmentRefSet = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany
     @JoinTable(
             name = "po_p",
-            joinColumns = { @JoinColumn(name = "prod_offer") },
-            inverseJoinColumns = { @JoinColumn(name = "place") }
+            joinColumns = { @JoinColumn(name = "prod_offer_fk") },
+            inverseJoinColumns = { @JoinColumn(name = "place_fk") }
     )
     Set<Place> placeSet = new HashSet<>();
 
-    //ToDo Place M-t-M
-    //ToDo ProdSpecCharValueUse M-t-M
+    @ManyToMany
+    @JoinTable(
+            name = "po_c",
+            joinColumns = { @JoinColumn(name = "prod_offer_fk") },
+            inverseJoinColumns = { @JoinColumn(name = "channel_fk") }
+    )
+    Set<Channel> channelSet = new HashSet<>();
+
+    @OneToMany
+    @JoinColumn(name = "prod_offer_fk")
+    Set<ProductOfferingPrice> productOfferingPriceSet;
+
+    @ManyToMany
+    @JoinTable(
+            name = "pscvu_po",
+            joinColumns = { @JoinColumn(name = "prod_spec_char_val_use_fk") },
+            inverseJoinColumns = { @JoinColumn(name = "prod_offer_fk") }
+    )
+    Set<ProdSpecCharValueUse> prodSpecCharValueUseSet = new HashSet<>();
 }

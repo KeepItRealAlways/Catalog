@@ -6,6 +6,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -14,43 +16,41 @@ public class ProductSpecification {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id; //A string. Unique identifier of the category.
+    private String prod_spec_id;
 
     @Column(name = "href")
-    private String href; //A string. Reference of the category
+    private String href;
 
     @Column(name="last_update")
     @UpdateTimestamp
-    private Timestamp lastUpdate; //Date and time of the last update
+    private Timestamp lastUpdate;
 
     @Column(name = "lifecycle_status")
-    private String lifecycleStatus; //Used to indicate the current lifecycle status
+    private String lifecycleStatus;
 
     @Column(name = "valid_for_begin")
-    private Timestamp validForBegin; //The TimePeriod for which the category is valid
+    private Timestamp validForBegin;
 
     @Column(name = "valid_for_end")
-    private Timestamp validForEnd; //The TimePeriod for which the category is valid
-
-    @Column(name = "parent_category")
-    private String parentId; //Unique identifier of the parent category
+    private Timestamp validForEnd;
 
     @Column(name = "name")
-    private String name; //Name of the category
+    private String name;
 
     @Column(name = "description")
-    private String description; //Description of the category
+    private String description;
 
     @Column(name = "brand")
-    private String brand; //Description of the category
+    private String brand;
 
     @Column(name = "prodnumber")
-    private String productNumber; //Description of the category
+    private String productNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "catalog", referencedColumnName = "id")
-    private Catalog catalog;
-
-    //ToDo prodSpecValUse M-t-O
-    //ToDo relatedPartyRef M-t-M
+    @ManyToMany
+    @JoinTable(
+            name = "ps_rpr",
+            joinColumns = { @JoinColumn(name = "related_party_ref_fk") },
+            inverseJoinColumns = { @JoinColumn(name = "prod_spec_fk") }
+    )
+    Set<RelatedPartyRef> relatedPartyRefSet = new HashSet<>();
 }

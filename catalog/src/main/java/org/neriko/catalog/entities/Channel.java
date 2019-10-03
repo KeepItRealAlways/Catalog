@@ -9,25 +9,16 @@ import java.util.Set;
 
 @Data
 @Entity
-@Table(name = "place")
-public class Place {
+@Table(name = "channel")
+public class Channel {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String place_id;
+    private String channel_id;
 
     @Column(name = "href")
     private String href;
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "geolocation_url")
-    private String geolocationUrl;
-
-    @Column(name = "address")
-    private String address;
-
-    @Column(name = "role")
-    private String role;
 }

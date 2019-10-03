@@ -6,6 +6,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -16,7 +18,7 @@ public class Catalog {
     @Id
     @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
-    private String id; //Unique identifier of the catalog
+    private String catalog_id; //Unique identifier of the catalog
 
     @Column(name="href")
     private String href; //Reference of the catalog
@@ -43,6 +45,11 @@ public class Catalog {
     @Column(name="valid_for_end")
     private Timestamp validForEnd;
 
-    @OneToMany(mappedBy = "catalog")
-    private Set<Category> categories;
+    @ManyToMany
+    @JoinTable(
+            name = "c_rpr",
+            joinColumns = { @JoinColumn(name = "related_party_ref_fk") },
+            inverseJoinColumns = { @JoinColumn(name = "catalog_fk") }
+    )
+    Set<RelatedPartyRef> relatedPartyRefSet = new HashSet<>();
 }
